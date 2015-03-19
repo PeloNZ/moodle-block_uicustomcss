@@ -23,4 +23,14 @@
  
         'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
+
+    'block/uicustomcss:view' => array(
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_BLOCK,
+        'archetypes' => array(
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+            'student' => CAP_PREVENT,
+        ),
+    ),
 );

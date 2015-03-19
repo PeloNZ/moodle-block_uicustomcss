@@ -41,6 +41,7 @@ class block_uicustomcss_edit_form extends block_edit_form {
             '#333399' => get_string('darkblue', 'block_uicustomcss'),
             '#FF9900' => get_string('orange', 'block_uicustomcss'),
             '#999999' => get_string('grey', 'block_uicustomcss'),
+            '#FFFFFF' => get_string('white', 'block_uicustomcss'),
         );
 
         // Options for text alignment.
@@ -65,7 +66,8 @@ class block_uicustomcss_edit_form extends block_edit_form {
 
         foreach ($regions as $region) {
             $mform->addElement('header', 'header_block_'.$region, get_string('header_block_'.$region, 'block_uicustomcss'));
-            //Heading background color.
+            $mform->setExpanded('header_block_'.$region);
+            // Heading background color.
             $select =& $mform->createElement('select', 'config_header_background_'.$region, get_string('config_header_background', 'block_uicustomcss'));
             foreach ($coloroptions as $value => $text) {
                 $select->addOption($text, $value, array('style' => "background: {$value}; color: #fff"));
@@ -82,12 +84,12 @@ class block_uicustomcss_edit_form extends block_edit_form {
             }
             $mform->addElement($select);
 
-            //Border size.
+            // Border size. Default 2px.
             $mform->addElement('select', 'config_border_size_'.$region, get_string('config_border_size', 'block_uicustomcss'), $borderoptions);
             $mform->addHelpButton('config_border_size_'.$region, 'config_border_size', 'block_uicustomcss');
-            $mform->setDefault('config_border_size_'.$region, 5);
+            $mform->setDefault('config_border_size_'.$region, 2);
 
-            //Border corner radius.
+            // Border corner radius. Default 5px.
             $mform->addElement('select', 'config_border_corner_'.$region, get_string('config_border_corner', 'block_uicustomcss'), $borderoptions);
             $mform->addHelpButton('config_border_corner_'.$region, 'config_border_corner', 'block_uicustomcss');
             $mform->setDefault('config_border_corner_'.$region, 5);

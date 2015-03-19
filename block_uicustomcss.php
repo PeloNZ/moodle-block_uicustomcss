@@ -54,46 +54,42 @@ class block_uicustomcss extends block_base {
             );
 
             foreach ($regions as $region) {
+                $cssheader = '';
+                $cssborder = '';
+
                 // Set the block heading background.
                 if ($this->config->{"header_background_$region"} !== 'default') {
-                    $this->config->csscode .= "
-                        #{$region} .block .title h2 {
-                        background:{$this->config->{"header_background_$region"}};
-                        color:#fff !important;
-                        border:none;
-                }";
+                    $cssheader .= "background: {$this->config->{"header_background_$region"}}; color: #fff; border: none; ";
+                    // Show the header full width.
+                    $cssborder .= "padding: 0; ";
                 }
 
                 // Set the block heading text alignment.
                 if ($this->config->{"header_text_align_$region"} !== 'default') {
-                    $this->config->csscode .= "
-                        #{$region} .block .title h2 {
-                        text-align:{$this->config->{"header_text_align_$region"}};
-                }";
+                    $cssheader .= "text-align:{$this->config->{"header_text_align_$region"}}; ";
                 }
 
                 // Set the block border color.
                 if ($this->config->{"border_color_$region"} !== 'default') {
-                    $this->config->csscode .= "
-                        #{$region} .block {
-                        border-color:{$this->config->{"border_color_$region"}};
-                }";
+                    $cssborder .= "border-color:{$this->config->{"border_color_$region"}} !important; ";
                 }
 
-                // Set the block border size. 5 is the default value.
-                if (!empty($this->config->{"border_size_$region"} && ($this->config->{"border_size_$region"} !== '5'))) {
-                    $this->config->csscode .= "
-                        #{$region} .block {
-                        border:{$this->config->{"border_size_$region"}}px solid;
-                }";
+                // Set the block border size. 2 is the default value.
+                if (!empty($this->config->{"border_size_$region"} && ($this->config->{"border_size_$region"} !== '2'))) {
+                    $cssborder .= "border:{$this->config->{"border_size_$region"}}px solid ; ";
                 }
 
                 // Set the block border corner radius. 5 is the default value.
                 if (!empty($this->config->{"border_corner_$region"} && ($this->config->{"border_corner_$region"} !== '5'))) {
-                    $this->config->csscode .= "
-                        #{$region} .block {
-                        border-radius:{$this->config->{"border_corner_$region"}}px;
-                }";
+                    $cssborder .= "border-radius:{$this->config->{"border_corner_$region"}}px; ";
+                }
+
+                // Add the CSS to the block config.
+                if (!empty($cssborder)) {
+                    $this->config->csscode .= "#{$region} .block {\r\n$cssborder\r\n}\r\n";
+                }
+                if (!empty($cssheader)) {
+                    $this->config->csscode .= "#{$region} .block .title h2 {\r\n$cssheader\r\n}\r\n";
                 }
             }
 
@@ -115,5 +111,27 @@ class block_uicustomcss extends block_base {
         return $this->content;
     } // end get_content()
 
+    public function applicable_formats() {
+        return array('course-view' => true);
+    }
+
+    public function hide_header() {
+        if (has_capability('block/uicustomcss:view', $this->context)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function html_attributes() {
+        $attributes = parent::html_attributes(); // Get default values
+
+        // Hide the block from learners.
+        if (!has_capability('block/uicustomcss:view', $this->context)) {
+            $attributes['class'] .= ' hide';
+        }
+
+        return $attributes;
+    }
 
 }   // Here's the closing bracket for the class definition
