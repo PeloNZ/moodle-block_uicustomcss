@@ -59,7 +59,7 @@ class block_uicustomcss extends block_base {
 
                 // Set the block heading background.
                 if ($this->config->{"header_background_$region"} !== 'default') {
-                    $cssheader .= "background: {$this->config->{"header_background_$region"}}; color: #fff; border: none; ";
+                    $cssheader .= "background: {$this->config->{"header_background_$region"}}; color: #fff; border: none; padding-left: 10px; padding-right: 10px; ";
                     // Show the header full width.
                     $cssborder .= "padding: 0; ";
                 }
