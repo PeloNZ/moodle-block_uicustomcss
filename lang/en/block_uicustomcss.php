@@ -32,7 +32,7 @@ $string['uicustomcss'] = 'UI Custom CSS'; // appears in ADD A BLOCK menu
 // blocks menu text
 $string['uicustomcss:addinstance'] = 'Add a new custom CSS block';	// appears in
 $string['uicustomcss:myaddinstance'] = 'Add a new custom CSS block to my.moodle';
-
+$string['uicustomcss:view'] = 'View the UI Custom CSS block';
 
 // configure form inputs:
 
