@@ -54,14 +54,17 @@ class block_uicustomcss extends block_base {
             );
 
             foreach ($regions as $region) {
+                $cssblock = '';
                 $cssheader = '';
-                $cssborder = '';
+                $csscontent = '';
 
                 // Set the block heading background.
                 if ($this->config->{"header_background_$region"} !== 'default') {
                     $cssheader .= "background: {$this->config->{"header_background_$region"}}; color: #fff; border: none; padding-left: 10px; padding-right: 10px; ";
                     // Show the header full width.
-                    $cssborder .= "padding: 0; ";
+                    $cssblock .= "padding: 0; ";
+                    // But keep the block content padding.
+                    $csscontent .= "padding: 0 10px 10px; ";
                 }
 
                 // Set the block heading text alignment.
@@ -71,25 +74,28 @@ class block_uicustomcss extends block_base {
 
                 // Set the block border color.
                 if ($this->config->{"border_color_$region"} !== 'default') {
-                    $cssborder .= "border-color:{$this->config->{"border_color_$region"}} !important; ";
+                    $cssblock .= "border-color:{$this->config->{"border_color_$region"}} !important; ";
                 }
 
                 // Set the block border size. 2 is the default value.
                 if (!empty($this->config->{"border_size_$region"} && ($this->config->{"border_size_$region"} !== '2'))) {
-                    $cssborder .= "border:{$this->config->{"border_size_$region"}}px solid ; ";
+                    $cssblock .= "border:{$this->config->{"border_size_$region"}}px solid ; ";
                 }
 
                 // Set the block border corner radius. 5 is the default value.
                 if (!empty($this->config->{"border_corner_$region"} && ($this->config->{"border_corner_$region"} !== '5'))) {
-                    $cssborder .= "border-radius:{$this->config->{"border_corner_$region"}}px; ";
+                    $cssblock .= "border-radius:{$this->config->{"border_corner_$region"}}px; ";
                 }
 
                 // Add the CSS to the block config.
-                if (!empty($cssborder)) {
-                    $this->config->csscode .= "#{$region} .block {\r\n$cssborder\r\n}\r\n";
+                if (!empty($cssblock)) {
+                    $this->config->csscode .= "#{$region} .block {\r\n$cssblock\r\n}\r\n";
                 }
                 if (!empty($cssheader)) {
                     $this->config->csscode .= "#{$region} .block .title h2 {\r\n$cssheader\r\n}\r\n";
+                }
+                if (!empty($csscontent)) {
+                    $this->config->csscode .= "#{$region} .block .content {\r\n$csscontent\r\n}\r\n";
                 }
             }
 
